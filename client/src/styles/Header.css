@@ -1,0 +1,71 @@
+.header {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px 20px;
+  color: black;
+  gap: 20px; 
+}
+
+.header .left {
+  display: flex;
+  align-items: center; 
+  gap: 20px; 
+}
+
+.header .left a,
+.header .left button,
+.header .left span {
+  color: black;
+  text-decoration: none;
+}
+
+.home-icon img {
+  width: 50px;
+  height: 50px;
+}
+
+.home-icon:hover {
+  opacity: 0.7;
+}
+
+.logout-btn {
+  padding: 10px 20px; 
+  background: transparent;
+  outline: none;
+  color: black;
+  border: 0;
+  cursor: pointer;
+  font-size: 14px;
+  margin-left: 10px; 
+
+}
+
+.logout-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.logout-btn:hover {
+  opacity: 0.7;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: bold;
+  margin-left: 10px; 
+}
+
+
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column; 
+    text-align: left; 
+    gap: 15px; 
+  }
+
+  .header .left {
+    gap: 15px; 
+  }
+}

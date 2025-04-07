@@ -1,0 +1,158 @@
+/* Импорт шрифтов */
+@font-face {
+    font-family: "Mont";
+    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Regular.ttf")
+      format("truetype");
+    font-weight: normal;
+  }
+  
+  @font-face {
+    font-family: "Mont";
+    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Bold.ttf")
+      format("truetype");
+    font-weight: bold;
+  }
+  
+  @font-face {
+    font-family: "Mont";
+    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-BlackItalic.ttf")
+      format("truetype");
+    font-weight: 900;
+  }
+  
+  @font-face {
+    font-family: "Mont";
+    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Light.ttf")
+      format("truetype");
+    font-weight: 300;
+  }
+  
+  /* Сброс базовых стилей */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: "Mont", sans-serif;
+    background-color: #ffffff;
+    color: #333;
+  }
+  
+  /* Общий контейнер страницы */
+  .page-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    padding: 20px;
+    background-color: #ffffff;
+  }
+  
+  /* Левая сторона — изображение */
+  .left-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .img-fluid {
+    max-width: 90%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    object-fit: cover;
+  }
+  
+  /* Правая сторона — форма */
+  .right-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .login-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    border-radius: 12px;
+  }
+  
+  .login-form h2 {
+    color: #363d78;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+  
+  .form-group input {
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s;
+    outline: none;
+  }
+  
+  .form-group input:focus {
+    border-color: #2f3177;
+  }
+  
+  .form-group label {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+  }
+  
+  .button-group {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  
+  .button-group button {
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #2f3177;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    height: 53px;
+    width: 345px;
+  }
+  
+  .button-group button:hover {
+    background-color: #24255e;
+  }
+  
+  .button-group p {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+  }
+  
+  .button-group a {
+    color: #2f3177;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .button-group a:hover {
+    text-decoration: underline;
+  }
+  
