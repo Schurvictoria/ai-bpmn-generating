@@ -1,30 +1,30 @@
 @font-face {
   font-family: 'Mont';
-  src: url('/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Regular.ttf') format('truetype');
+  src: url('styles/fonts/Mont-Regular.ttf') format('truetype');
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Mont';
-  src: url('/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Bold.ttf') format('truetype');
+  src: url('styles/fonts/Mont-Bold.ttf') format('truetype');
   font-weight: bold;
 }
 
 @font-face {
   font-family: 'Mont';
-  src: url('/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-BlackItalic.ttf') format('truetype');
+  src: url('styles/fonts/Mont-BlackItalic.ttf') format('truetype');
   font-weight: weight;
 }
 
 @font-face {
   font-family: 'Mont';
-  src: url('/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Light.ttf') format('truetype');
+  src: url('styles/fonts/Mont-Light.ttf') format('truetype');
   font-weight: light;
 }
 
 @font-face {
   font-family: 'Mont';
-  src: url('/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-SemiBold.ttf') format('truetype');
+  src: url('styles/fonts/Mont-SemiBold.ttf') format('truetype');
   font-weight: semi-bold;
 }
 

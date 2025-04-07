@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ReactComponent as LoginImage } from "/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/images/image 3.svg";
-import "/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/AuthStyles.css";
+import { ReactComponent as LoginImage } from "styles/images/image 3.svg";
+import "styles/AuthStyles.css";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");

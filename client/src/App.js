@@ -1,12 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import HomePage from "./pages/HomePage";
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
-import ChatPage from './pages/ChatPage';
-import PrivateRoute from './modules/PrivateRoute';
-import BPMNPage from './pages/BPMNPage';
+// import HomePage from "C:\Users\schur\OneDrive\Desktop\Курсовой проект\ai-bpmn-generating\client\src\HomePage.js";
+// import LoginPage from "C:\Users\schur\OneDrive\Desktop\Курсовой проект\ai-bpmn-generating\client\src\LoginPage.js";
+// import RegisterPage from 'C:\Users\schur\OneDrive\Desktop\Курсовой проект\ai-bpmn-generating\client\src\RegisterPage.js'; 
+// import ChatPage from 'C:\Users\schur\OneDrive\Desktop\Курсовой проект\ai-bpmn-generating\client\src\ChatPage.js';
+// import PrivateRoute from 'C:\Users\schur\OneDrive\Desktop\Курсовой проект\ai-bpmn-generating\client\src\PrivateRoute.js';
+// import BPMNPage from 'C:\Users\schur\OneDrive\Desktop\Курсовой проект\ai-bpmn-generating\client\src\BPMNPage.js';
+
+import HomePage from "pages/HomePage";
+import LoginPage from "pages/LoginPage";
+import RegisterPage from 'pages/RegisterPage'; 
+import ChatPage from 'pages/ChatPage';
+import PrivateRoute from 'processing/PrivateRoute';
+import BPMNPage from 'pages/BPMNPage';
+
 function App() {
   return (
     <BrowserRouter>

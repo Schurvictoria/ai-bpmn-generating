@@ -1,28 +1,28 @@
 /* Импорт шрифтов */
 @font-face {
     font-family: "Mont";
-    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Regular.ttf")
+    src: url("styles/fonts/Mont-Regular.ttf")
       format("truetype");
     font-weight: normal;
   }
   
   @font-face {
     font-family: "Mont";
-    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Bold.ttf")
+    src: url("styles/fonts/Mont-Bold.ttf")
       format("truetype");
     font-weight: bold;
   }
   
   @font-face {
     font-family: "Mont";
-    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-BlackItalic.ttf")
+    src: url("styles/fonts/Mont-BlackItalic.ttf")
       format("truetype");
     font-weight: 900;
   }
   
   @font-face {
     font-family: "Mont";
-    src: url("/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/fonts/Mont-Light.ttf")
+    src: url("styles/fonts/Mont-Light.ttf")
       format("truetype");
     font-weight: 300;
   }

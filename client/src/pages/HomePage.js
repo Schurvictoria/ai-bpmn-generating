@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/HomePage.css';
-import { ReactComponent as PlaneIcon } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Icons/Union.svg';
-import { ReactComponent as LogoutIcon } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Icons/sign-out.svg';
-import Header from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/modules/Header.js'
+import 'styles/HomePage.css';
+import { ReactComponent as PlaneIcon } from 'styles/Icons/Union.svg';
+import Header from 'modules/Header'
 
 // TO-DO
 // Защита от запросов, которые не касаются бизнес процессов

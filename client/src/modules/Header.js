@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Header.css';
-import { ReactComponent as LogoutIcon } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Icons/sign-out.svg';
-import { ReactComponent as HomeIcon } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Icons/home.svg';
-import { ReactComponent as UserIcon } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Icons/user.svg';
+import 'styles/Header.css';
+import { ReactComponent as LogoutIcon } from 'styles/Icons/sign-out.svg';
+import { ReactComponent as HomeIcon } from 'styles/Icons/home.svg';
+//import { ReactComponent as UserIcon } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Icons/user.svg';
 
 const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

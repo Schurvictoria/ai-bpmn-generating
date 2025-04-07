@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { ReactComponent as PlaneIcon } from "../styles/Icons/Union.svg";
+import { ReactComponent as PlaneIcon } from "styles/Icons/Union.svg";
 import { motion } from "framer-motion";
 import axios from "axios";
-import '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/ChatStyles.css'
-import { renderBpmnToSvg } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/processing/BPMNProcessing.js'
-import BpmnViewer from "/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/processing/BPMNProcessing.js";
-import Header from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/modules/Header.js'
+import 'styles/ChatStyles.css'
+import BpmnViewer from "processing/BPMNProcessing";
+import Header from 'modules/Header'
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
