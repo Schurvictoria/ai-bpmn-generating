@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ReactComponent as PlaneIcon } from "styles/Icons/Union.svg";
 import { motion } from "framer-motion";
 import axios from "axios";
@@ -12,6 +12,7 @@ const ChatPage = () => {
   const [bpmnFileUrl, setBpmnFileUrl] = useState(null);
   const [aiMessage, setAiMessage] = useState(null);
   const [initialMessagesAdded, setInitialMessagesAdded] = useState(false);
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     if (!initialMessagesAdded) {
@@ -22,6 +23,13 @@ const ChatPage = () => {
       setInitialMessagesAdded(true);
     }
   }, [initialMessagesAdded]);
+
+  // Функция прокрутки вниз
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   const fetchAIResponse = async (userInput) => {
     try {
@@ -83,6 +91,10 @@ const ChatPage = () => {
     }
   };
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   return (
     <motion.div
       className="chat-page"
@@ -94,7 +106,6 @@ const ChatPage = () => {
       <div>
         <Header />
       </div>
-      {/* <div className = "chat-text"><h2>Chat with Flowify AI</h2></div> */}
       <div className="chat-window">
         <div className="chat-messages">
           {messages.map((message, index) => (
@@ -115,8 +126,9 @@ const ChatPage = () => {
               )}
             </div>
           ))}
+          {/* Ссылка для прокрутки вниз */}
+          <div ref={messagesEndRef} />
         </div>
-
         <div className="chat-input">
           <input
             type="text"
@@ -125,8 +137,6 @@ const ChatPage = () => {
             onChange={(e) => setInput(e.target.value)}
             disabled={messages.length === 0}
           />
-        </div>
-        <div className="chat-input">
           <button onClick={handleSend} disabled={input.trim() === ""}>
             <PlaneIcon width="24" height="24" />
           </button>

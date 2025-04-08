@@ -8,10 +8,13 @@ from flask_bcrypt import Bcrypt
 from flask_cors import CORS
 from models import db, User
 import os
-from config import secret_key, database_url, openai_api_key
+from config import secret_key, database_url, openai_api_key, email_json
+from flask_mail import Mail, Message
+#from flask_migrate import Migrate
 
 app = Flask(__name__)
 CORS(app)
+
 
 app.config['SECRET_KEY'] = secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = database_url
@@ -19,6 +22,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 serializer = URLSafeTimedSerializer(app.config["SECRET_KEY"])
 
+app.config.update(email_json)
+mail = Mail(app)
+
+#migrate = Migrate(app, db)
 
 bcrypt = Bcrypt(app)
 db.init_app(app)
@@ -76,10 +83,75 @@ def signup():
 
     session["user_id"] = new_user.id
 
-    return jsonify({
-        "id": new_user.id,
-        "email": new_user.email
-    })
+    token = serializer.dumps(email, salt='email-confirm')
+
+    # Ссылка для подтверждения
+    confirm_url = f"http://localhost:3000/confirm/{token}"
+    html = f'<p>Привет! Подтверди свою почту: <a href="{confirm_url}">{confirm_url}</a></p>'
+
+    # Отправка письма
+    msg = Message("Подтверждение регистрации", recipients=[email], html=html)
+    mail.send(msg)
+
+    return jsonify({"message": "Письмо с подтверждением отправлено!"}), 200
+
+    # return jsonify({
+    #     "id": new_user.id,
+    #     "email": new_user.email
+    # })
+
+from flask import redirect
+
+@app.route("/confirm/<token>", methods=["GET"])
+def confirm_email(token):
+    try:
+        email = serializer.loads(token, salt='email-confirm', max_age=3600)
+    except Exception:
+        return jsonify({"message": "fail"}), 400
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({"message": "fail"}), 400
+
+    if user.is_confirmed:
+        return jsonify({"message": "Почта уже подтверждена"}), 200
+
+    user.is_confirmed = 1
+    db.session.commit()
+    return jsonify({"message": "Email подтверждён!"}), 200
+
+
+
+@app.route("/resend-email", methods=["POST"])
+def resend_email():
+    data = request.get_json()
+    email = data.get("email")
+
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({"error": "User not found"}), 404
+
+    if user.is_confirmed:
+        return jsonify({"message": "Email already confirmed"}), 400
+
+    # Генерация нового токена подтверждения
+    token = serializer.dumps(email, salt="email-confirm")
+
+    confirm_url = f"http://localhost:3000/confirm-email?token={token}&email={email}"
+
+    msg = Message(
+        subject="Confirm your email",
+        recipients=[email],
+        body=f"Please confirm your email by clicking on the link: {confirm_url}"
+    )
+
+    try:
+        mail.send(msg)
+        return jsonify({"message": "Confirmation email resent"}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to send email: {str(e)}"}), 500
 
 @app.route("/login", methods=["POST"])
 def login_user():
@@ -94,6 +166,9 @@ def login_user():
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "Unauthorized"}), 401
 
+    if not user.is_confirmed:
+        return jsonify({"error": "Email not confirmed"}), 403
+    
     session["user_id"] = user.id
 
     token = serializer.dumps({"user_id": user.id, "email": user.email})
@@ -144,7 +219,8 @@ def ask_ai():
             "\nif No:"+
             "\nTask: “Notify Customer:”"+
             "\nEnd Event: “Order Delayed”"+
-            "\n</format>"},
+            "\n</format>"#}, +
+             "\n.If the user's input does not describe a business process (e.g., it's a personal statement, a question unrelated to processes, etc.), respond with 'Empty process'"},
             {"role": "user", "content": user_input}
         ]
 
@@ -155,7 +231,7 @@ def ask_ai():
 
         descriped_process_response = response.choices[0].message.content.strip()
 
-        if not descriped_process_response:
+        if not descriped_process_response or descriped_process_response == "Empty process":
             return jsonify({"error": "Described process is empty"}), 400
         
         messages = [
@@ -212,6 +288,38 @@ def describe_bpmn():
 
     except Exception as e:
         return jsonify({"error": f"Failed to process BPMN: {str(e)}"}), 500
+
+@app.route("/edit-bpmn", methods=["POST"])
+def edit_bpmn():
+    try:
+        if "bpmn_file" in request.files:
+            file = request.files["bpmn_file"]
+            xml_content = file.read().decode("utf-8")
+
+            messages = [
+                {"role": "system", "content": "You are a BPMN expert. Read this BPMN 2.0 XML and propose improvements to optimize, simplify, or clarify the process. Return only the edited BPMN XML with proper formatting and namespaces."},
+                {"role": "user", "content": xml_content}
+            ]
+        else:
+            user_input = request.json.get("query")
+            if not user_input:
+                return jsonify({"error": "No input provided"}), 400
+
+            messages = [
+                {"role": "system", "content": "You are a BPMN process designer. Generate a BPMN 2.0 XML process based on the description, and apply potential improvements, optimizations, or clarify ambiguous parts. Respond only with the resulting BPMN XML."},
+                {"role": "user", "content": user_input}
+            ]
+
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=messages
+        )
+
+        updated_bpmn = response.choices[0].message.content.strip()
+        return jsonify({"edited_bpmn": updated_bpmn})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

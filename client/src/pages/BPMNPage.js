@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { ReactComponent as PlaneIcon } from "styles/Icons/Union.svg";
 import { motion } from "framer-motion";
 import axios from "axios";
-import 'styles/ChatStyles.css'
+import 'styles/ChatStyles.css';
 import BpmnViewer from "processing/BPMNProcessing";
-import Header from 'modules/Header'
+import Header from 'modules/Header';
 
 const ChatPage = () => {
   const [messages, setMessages] = useState([]);
@@ -12,7 +12,7 @@ const ChatPage = () => {
   const [bpmnFileUrl, setBpmnFileUrl] = useState(null);
   const [aiMessage, setAiMessage] = useState(null);
   const [initialMessagesAdded, setInitialMessagesAdded] = useState(false);
-  const [isInputDisabled, setIsInputDisabled] = useState(true);
+  const [chatEnabled, setChatEnabled] = useState(false);
 
   useEffect(() => {
     if (!initialMessagesAdded) {
@@ -30,7 +30,6 @@ const ChatPage = () => {
         ...prevMessages,
         { text: "⏳ Processing your input...", sender: "assistant" },
       ]);
-      //setIsInputDisabled(true);
 
       const response = await axios.post("http://127.0.0.1:5000/describe-bpmn", {
         query: userInput,
@@ -65,8 +64,6 @@ const ChatPage = () => {
         ...prevMessages,
         { text: "❌ Something went wrong while generating the BPMN diagram. Please try again.", sender: "assistant" },
       ]);
-    } finally {
-      //setIsInputDisabled(true);
     }
   };
 
@@ -94,7 +91,6 @@ const ChatPage = () => {
         ...prev,
         { text: "📤 Uploading and analyzing BPMN file...", sender: "assistant" }
       ]);
-      //setIsInputDisabled(true);
 
       const response = await axios.post("http://127.0.0.1:5000/describe-bpmn", formData, {
         headers: { "Content-Type": "multipart/form-data" },
@@ -113,8 +109,6 @@ const ChatPage = () => {
         { text: "❌ Failed to describe BPMN file.", sender: "assistant" }
       ]);
       console.error("Upload error:", error);
-    } finally {
-      //setIsInputDisabled(false);
     }
   };
 
@@ -152,33 +146,41 @@ const ChatPage = () => {
           ))}
         </div>
 
-        <div className="upload-section">
-          <button className="upload-button" onClick={() => document.getElementById("bpmn-upload").click()}>
-            📁 Upload BPMN File
-          </button>
-          <input
-            id="bpmn-upload"
-            type="file"
-            accept=".bpmn, .xml"
-            style={{ display: "none" }}
-            onChange={handleBpmnUpload}
-          />
-        </div>
+        <div className="input-container">
+  <div className="chat-input">
+    <input 
+      type="text" 
+      placeholder="Enter your request..." 
+      disabled={!chatEnabled}
+      style={{
+        backgroundColor: chatEnabled ? "white" : "#f2f2f2",
+        cursor: chatEnabled ? "text" : "not-allowed",
+        opacity: chatEnabled ? 1 : 0.6,
+        paddingRight: '40px',
+        flex: 1,
+      }}
+      value={input}
+      onChange={(e) => setInput(e.target.value)}
+    />
+  
+    <div className="upload-section">
+      <button 
+        className="upload_button"
+        onClick={() => document.getElementById("bpmn-upload").click()}
+      >
+        📁 Upload BPMN File
+      </button>
+      <input
+        id="bpmn-upload"
+        type="file"
+        accept=".bpmn, .xml"
+        style={{ display: "none" }}
+        onChange={handleBpmnUpload}
+      />
+    </div>
+  </div>
+</div>
 
-        <div className="chat-input">
-          <input
-            type="text"
-            placeholder="Enter your request..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            style={{ pointerEvents: isInputDisabled ? 'none' : 'auto' }}
-          />
-        </div>
-        <div className="chat-input">
-          <button onClick={handleSend} disabled={input.trim() === "" || isInputDisabled}> {/* Отключаем кнопку при блокировке ввода */}
-            <PlaneIcon width="24" height="24" />
-          </button>
-        </div>
       </div>
     </motion.div>
   );

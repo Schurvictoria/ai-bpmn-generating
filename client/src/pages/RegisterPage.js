@@ -16,7 +16,7 @@ export default function RegisterPage(){
         })
         .then(function (response) {
             console.log(response);
-            navigate("/");
+            navigate("/confirm-email?email=${email}");
         })
         .catch(function (error) {
             console.log(error, 'error');

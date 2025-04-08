@@ -4,16 +4,21 @@ import 'styles/HomePage.css';
 import { ReactComponent as PlaneIcon } from 'styles/Icons/Union.svg';
 import Header from 'modules/Header'
 
+
 // TO-DO
-// Защита от запросов, которые не касаются бизнес процессов
-// Возможность обращаться к апишке не из зарубежа
-// Улучшить дизайн фичи bpmn to text
-// Добавить описание процесса
-// Третью фичу добавить
-// Хост
-// Комменты нормальные сделать в коде
-// Адаптивность добавить
-// Причесать стили
+// Защита от запросов, которые не касаются бизнес процессов ✅
+// Улучшить дизайн фичи bpmn to text ✅
+// Добавить описание процесса 
+// Третью фичу добавить✅
+// Хост (+Возможность обращаться к апишке не из зарубежа)
+// Комменты нормальные сделать в коде ✅
+// Адаптивность добавить 
+// Причесать стили ✅
+// Убрать инпут на главной странице, надо чтобы на главной он оставался внизу при адаптивности
+// Адаптивность для странц логина и регистрации
+// Стили для потверждения аккаунта
+// Третью фичу модифиуировать
+// В фиче bpmn to text улучшить ответ модельки
 
 const Dashboard = () => {
     const [userEmail, setUserEmail] = useState(null);
@@ -76,7 +81,6 @@ const Dashboard = () => {
 
             {/* Чат — всегда отображается, но заблокирован по умолчанию */}
             <div className="chat-window">
-                <div className="chat-input"><p>To get started, simply click on your goal and begin!</p></div>
                 <div className="chat-input">
                     <input 
                         type="text" 
@@ -85,22 +89,28 @@ const Dashboard = () => {
                         style={{
                             backgroundColor: chatEnabled ? "white" : "#f2f2f2",
                             cursor: chatEnabled ? "text" : "not-allowed",
-                            opacity: chatEnabled ? 1 : 0.6
+                            opacity: chatEnabled ? 1 : 0.6,
+                            paddingRight: '40px',
                         }}
                     />
-                </div>
-                <div className="chat-input">
                     <button 
                         disabled={!chatEnabled}
                         style={{
-                            cursor: chatEnabled ? "pointer" : "not-allowed",
-                            opacity: chatEnabled ? 1 : 0.5
+                            position: 'absolute',
+                            right: '10px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            background: 'none',
+                            border: 'none',
+                            cursor: chatEnabled ? 'pointer' : 'not-allowed',
+                            opacity: chatEnabled ? 1 : 0.5,
                         }}
                     >
                         <PlaneIcon width="24" height="24" />
                     </button>
                 </div>
             </div>
+
         </div>
     );
 };

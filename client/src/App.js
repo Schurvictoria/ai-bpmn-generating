@@ -14,7 +14,9 @@ import RegisterPage from 'pages/RegisterPage';
 import ChatPage from 'pages/ChatPage';
 import PrivateRoute from 'processing/PrivateRoute';
 import BPMNPage from 'pages/BPMNPage';
-
+import EditPage from 'pages/EditBPMN';
+import EmailConfirmationPage from 'pages/EmailConfirmationPage';
+import EmailConfirmationResultPage from 'pages/EmailConfirmationResultPage'
 function App() {
   return (
     <BrowserRouter>
@@ -28,9 +30,22 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/logout" element={<LoginPage />} />
             <Route path="/describe-bpmn" element={<BPMNPage />} />
+            <Route path="/edit-bpmn" element={<EditPage />} />
+            <Route path="/confirm-email" element={<EmailConfirmationPage />} />
+            {/* <Route path="/confirm/:token" element={<LoginPage />} /> */}
+            <Route path="/confirm/:token" element={<EmailConfirmationResultPage />} />
+
+
             
             {/* Защищённый маршрут */}
             <Route path="/chat" element={
+              <PrivateRoute>
+                <ChatPage />
+              </PrivateRoute>
+            } />
+
+            {/* Защищённый маршрут */}
+            <Route path="/edit-bpmn" element={
               <PrivateRoute>
                 <ChatPage />
               </PrivateRoute>
