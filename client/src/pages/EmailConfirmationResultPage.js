@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import 'styles/confirmation.css';
 
 export default function EmailConfirmationResultPage() {
     const { token } = useParams();
@@ -50,7 +51,7 @@ export default function EmailConfirmationResultPage() {
             case "success":
                 return "Email успешно подтверждён!";
             case "already":
-                return "Email уже подтверждён ранее.";
+                return "Email подтверждён.";
             case "fail":
                 return "Ошибка подтверждения. Ссылка недействительна или устарела.";
             default:
@@ -59,9 +60,12 @@ export default function EmailConfirmationResultPage() {
     };
 
     return (
+        <div className="confirmation-page">
+        <div className="confirmation-container"></div>
         <div style={{ padding: "2rem", textAlign: "center" }}>
-            <h2>{renderMessage()}</h2>
-            {status !== "loading" && <p>Сейчас вы будете перенаправлены на страницу входа...</p>}
+        <h2 className="confirmation-title">{renderMessage()}</h2>
+            {status !== "loading" && <p className="confirmation-text">Сейчас вы будете перенаправлены на страницу входа...</p>}
+        </div>
         </div>
     );
 }

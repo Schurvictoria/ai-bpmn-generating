@@ -136,7 +136,6 @@ def resend_email():
     if user.is_confirmed:
         return jsonify({"message": "Email already confirmed"}), 400
 
-    # Генерация нового токена подтверждения
     token = serializer.dumps(email, salt="email-confirm")
 
     confirm_url = f"http://localhost:3000/confirm-email?token={token}&email={email}"
@@ -274,7 +273,7 @@ def describe_bpmn():
 
     try:
         messages = [
-            {"role": "system", "content": "You are a BPMN process analyst. Read the BPMN 2.0 XML and describe the business process in plain language."},
+            {"role": "system", "content": "You are a BPMN process analyst. Read the BPMN 2.0 XML and describe the business process in plain language. "},
             {"role": "user", "content": f"Here is the BPMN XML:\n\n{xml_content}"}
         ]
 

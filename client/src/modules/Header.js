@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import 'styles/Header.css';
 import { ReactComponent as LogoutIcon } from 'styles/Icons/sign-out.svg';
-import { ReactComponent as HomeIcon } from 'styles/Icons/home.svg';
-//import { ReactComponent as UserIcon } from '/Users/victoriaschur/Desktop/bpm-generating-course-project/client/src/styles/Icons/user.svg';
+import { ReactComponent as HomeIcon } from 'styles/Icons/home_icon.svg';
 
 const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userEmail, setUserEmail] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem('authToken') && !!localStorage.getItem('userEmail')
+  );
+  const [userEmail, setUserEmail] = useState(localStorage.getItem('userEmail') || '');
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -26,8 +27,6 @@ const Header = () => {
     window.location.href = '/login';
   };
 
-  if (!isAuthenticated) return null;
-
   return (
     <header className="header">
       <div className="left">
@@ -36,16 +35,16 @@ const Header = () => {
         </a>
       </div>
 
-      <div className="left">
-        <button className="logout-btn" onClick={handleLogout}>
-          <LogoutIcon className="logout-icon" />
-          <span>Logout</span>
-        </button>
-      </div>
-
-      <div className="left">
-      {/* <UserIcon className="logout-icon" /> */}
-        <span className="username">{userEmail}</span>
+      <div className="right">
+        {isAuthenticated && (
+          <>
+            <span className="username">{userEmail}</span>
+            <button className="logout-btn" onClick={handleLogout}>
+              <LogoutIcon className="logout-icon" />
+              <span>Logout</span>
+            </button>
+          </>
+        )}
       </div>
     </header>
   );

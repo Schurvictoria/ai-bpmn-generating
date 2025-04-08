@@ -20,6 +20,8 @@ body {
   background-color: white;
 }
 
+/* ---------------- HEADER ---------------- */
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -36,10 +38,18 @@ body {
   height: 60px;
 }
 
+
 .header .left {
   display: flex;
   align-items: center;
   gap: 20px;
+}
+
+.header .right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
 }
 
 .header .left a,
@@ -69,7 +79,6 @@ body {
   border: 0;
   cursor: pointer;
   font-size: 14px;
-  margin-left: 10px;
   display: flex;
   align-items: center;
   gap: 5px;
@@ -78,16 +87,14 @@ body {
 .username {
   font-size: 16px;
   font-weight: bold;
-  margin-left: 10px;
   white-space: nowrap;
 }
 
+/* ---------------- RESPONSIVE ---------------- */
+
 @media (max-width: 1024px) {
   .header {
-    flex-direction: row;
-    text-align: left;
     gap: 10px;
-    align-items: center;
   }
 
   .header .left {
@@ -107,10 +114,6 @@ body {
   .logout-btn {
     font-size: 12px;
   }
-
-  .header .right {
-    margin-left: auto;
-  }
 }
 
 @media (max-width: 768px) {
@@ -119,7 +122,6 @@ body {
   }
 
   .header {
-    flex-direction: row;
     gap: 5px;
     height: auto;
   }
@@ -137,12 +139,6 @@ body {
 
   .username {
     display: none;
-  }
-
-  .header .right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
   }
 
   .logout-btn {
@@ -172,10 +168,6 @@ body {
 
   .username {
     display: none;
-  }
-
-  .header .right {
-    margin-left: auto;
   }
 
   .logout-btn {

@@ -113,6 +113,10 @@ const ChatPage = () => {
   };
 
   return (
+    <>
+    <div>
+    <Header />
+  </div>
     <motion.div
       className="chat-page"
       initial={{ opacity: 0, y: 50 }}
@@ -120,9 +124,6 @@ const ChatPage = () => {
       exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 0.5 }}
     >
-      <div>
-        <Header />
-      </div>
 
       <div className="chat-window">
         <div className="chat-messages">
@@ -183,6 +184,7 @@ const ChatPage = () => {
 
       </div>
     </motion.div>
+    </>
   );
 };
 

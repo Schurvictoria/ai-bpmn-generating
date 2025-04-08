@@ -65,8 +65,10 @@ const EditPage = () => {
   };
 
   return (
+    <>
+    <Header />
     <motion.div className="chat-page" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} transition={{ duration: 0.5 }}>
-      <Header />
+      
 
       <div className="chat-window">
         <div className="chat-messages">
@@ -113,6 +115,7 @@ const EditPage = () => {
         )}
       </div>
     </motion.div>
+    </>
   );
 };
 

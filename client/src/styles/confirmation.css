@@ -1,0 +1,51 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Mont', sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .confirmation-container {
+    max-width: 500px;
+    text-align: left;
+    padding: 40px 20px;
+  }
+  
+  .confirmation-title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #2D2A69;
+    margin-bottom: 16px;
+  }
+  
+  .confirmation-text {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+  
+  .confirmation-text strong {
+    color: #000;
+  }
+  
+  .resend-button {
+    background-color: #2D2A69;
+    color: white;
+    font-size: 16px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .resend-button:hover {
+    background-color: #1f1b4f;
+  }
+  

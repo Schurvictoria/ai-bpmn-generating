@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 import {ReactComponent as RegisterImage } from 'styles/images/image 4.svg'
-import "styles/AuthStyles.css"; // Подключаем стили
- 
+import "styles/AuthStyles.css";
+
 export default function RegisterPage(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');

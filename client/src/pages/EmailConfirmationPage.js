@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
+import 'styles/confirmation.css';
 
 export default function EmailConfirmationPage() {
     const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
     const [resendSuccess, setResendSuccess] = useState(false);
     const location = useLocation();
     const navigate = useNavigate();
@@ -20,30 +19,33 @@ export default function EmailConfirmationPage() {
                 },
                 body: JSON.stringify({ email })
             });
-    
+
             const data = await res.json();
-    
+
             if (!res.ok) {
                 throw new Error(data.error || "Ошибка, попробуйте снова");
             }
-    
+
             alert("Письмо отправлено");
             setResendSuccess(true);
         } catch (err) {
             setError(err.message);
         }
     };
-    
-      
 
     return (
         <div className="confirmation-page">
-        <h2>Email confirmation</h2>
-        <p>Ссылка для подтверждения была отправлена на Вашу почту. Перейдите по ней, чтобы завершить регистрацию.</p>
-        {/* <strong>{email}</strong> */}
-        <button onClick={handleResend}>Переотправить письмо</button>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-
+            <div className="confirmation-container">
+                <h2 className="confirmation-title">Email confirmation</h2>
+                <p className="confirmation-text">
+                    Ссылка для подтверждения была отправлена на Вашу почту. Перейдите по ней, чтобы завершить регистрацию.
+                </p>
+                {/* <strong>{useremail}</strong> */}
+                <button className="resend-button" onClick={handleResend}>
+                    Переотправить письмо
+                </button>
+                {error && <p className="error-text">{error}</p>}
+            </div>
         </div>
     );
 }

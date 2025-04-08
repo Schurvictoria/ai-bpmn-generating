@@ -1,4 +1,3 @@
-/* Импорт шрифтов */
 @font-face {
     font-family: "Mont";
     src: url("styles/fonts/Mont-Regular.ttf")
@@ -27,7 +26,6 @@
     font-weight: 300;
   }
   
-  /* Сброс базовых стилей */
   * {
     margin: 0;
     padding: 0;
@@ -40,7 +38,6 @@
     color: #333;
   }
   
-  /* Общий контейнер страницы */
   .page-container {
     display: flex;
     flex-direction: row;
@@ -52,7 +49,6 @@
     background-color: #ffffff;
   }
   
-  /* Левая сторона — изображение */
   .left-side {
     flex: 1;
     display: flex;
@@ -69,7 +65,6 @@
     object-fit: cover;
   }
   
-  /* Правая сторона — форма */
   .right-side {
     flex: 1;
     display: flex;
@@ -156,3 +151,112 @@
     text-decoration: underline;
   }
   
+/* ========== АДАПТИВ ========== */
+
+
+@media (max-width: 1024px) {
+  .page-container {
+    flex-direction: column;
+    padding: 40px 20px;
+  }
+
+  .left-side,
+  .right-side {
+    flex: none;
+    width: 100%;
+    padding: 10px 0;
+  }
+
+  .login-form {
+    max-width: 100%;
+    padding: 30px 20px;
+  }
+
+  .button-group button {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .page-container {
+    flex-direction: column;
+    padding: 20px 15px;
+  }
+
+  .left-side {
+    display: none;
+  }
+
+  .right-side {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-form {
+    max-width: 100%;
+    padding: 20px 10px;
+  }
+
+  .button-group button {
+    width: 100%;
+    height: 48px;
+    font-size: 1rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .login-form {
+    padding: 20px 15px;
+  }
+
+  .login-form h2 {
+    font-size: 1.5rem;
+  }
+
+  .button-group button {
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    height: 45px;
+  }
+
+  .button-group p {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .page-container {
+    padding: 15px 10px;
+  }
+
+  .login-form {
+    padding: 15px;
+  }
+
+  .login-form h2 {
+    font-size: 1.25rem;
+  }
+
+  .form-group input {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .form-group label {
+    font-size: 0.8rem;
+  }
+
+  .button-group button {
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 10px;
+    height: 45px;
+  }
+
+  .button-group p {
+    font-size: 0.8rem;
+  }
+}
