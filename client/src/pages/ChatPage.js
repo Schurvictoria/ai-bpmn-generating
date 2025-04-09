@@ -24,7 +24,6 @@ const ChatPage = () => {
     }
   }, [initialMessagesAdded]);
 
-  // Функция прокрутки вниз
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
@@ -41,9 +40,8 @@ const ChatPage = () => {
       const response = await axios.post("http://127.0.0.1:5000/ask", {
         query: userInput,
       });
-      
-      const aiMessage = response.data.response.trim();
 
+      const aiMessage = response.data.response.trim();
       setAiMessage(aiMessage);
 
       const bpmnXmlString = aiMessage;
@@ -74,7 +72,10 @@ const ChatPage = () => {
       console.error("Ошибка при получении ответа от AI:", error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: "❌ Something went wrong when creating the BPMN chart. Please try again. Check your internet connection and whether your input relates to the description of the process.", sender: "assistant" },
+        {
+          text: "❌ Something went wrong when creating the BPMN chart. Please try again. Check your internet connection and whether your input relates to the description of the process.",
+          sender: "assistant"
+        },
       ]);
     }
   };
@@ -86,7 +87,6 @@ const ChatPage = () => {
         { text: input, sender: "user" },
       ]);
       setInput("");
-
       await fetchAIResponse(input);
     }
   };
@@ -97,54 +97,59 @@ const ChatPage = () => {
 
   return (
     <>
-          <div>
+      <div>
         <Header />
       </div>
- 
-    <motion.div
-      className="chat-page"
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 50 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="chat-window">
-        <div className="chat-messages">
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`chat-message ${message.sender === "assistant" ? "assistant" : "user"}`}
-            >
-              {message.text}
-              {message.isBpmn && aiMessage && (
-                <div>
-                  <BpmnViewer xml={aiMessage} />
-                  {bpmnFileUrl && (
-                    <a href={bpmnFileUrl} download="diagram.bpmn">
-                      Download BPMN File
-                    </a>
-                  )}
-                </div>
-              )}
-            </div>
-          ))}
-          {/* Ссылка для прокрутки вниз */}
-          <div ref={messagesEndRef} />
+
+      <motion.div
+        className="chat-page"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 50 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="chat-window">
+          <div className="chat-messages">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`chat-message ${message.sender === "assistant" ? "assistant" : "user"}`}
+              >
+                {message.text}
+                {message.isBpmn && aiMessage && (
+                  <div>
+                    <BpmnViewer xml={aiMessage} />
+                    {bpmnFileUrl && (
+                      <a href={bpmnFileUrl} download="diagram.bpmn">
+                        Download BPMN File
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="chat-input">
+            <input
+              type="text"
+              placeholder="Enter your request..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && input.trim() !== "") {
+                  handleSend();
+                }
+              }}
+              disabled={messages.length === 0}
+            />
+            <button onClick={handleSend} disabled={input.trim() === ""}>
+              <PlaneIcon width="24" height="24" />
+            </button>
+          </div>
         </div>
-        <div className="chat-input">
-          <input
-            type="text"
-            placeholder="Enter your request..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            disabled={messages.length === 0}
-          />
-          <button onClick={handleSend} disabled={input.trim() === ""}>
-            <PlaneIcon width="24" height="24" />
-          </button>
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
     </>
   );
 };
