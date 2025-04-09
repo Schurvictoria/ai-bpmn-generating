@@ -35,7 +35,7 @@ const ChatPage = () => {
     try {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: "⏳ Processing your input...", sender: "assistant" },
+        { text: "⏳ Processing of your request. It may take a few minutes...", sender: "assistant" },
       ]);
 
       const response = await axios.post("http://127.0.0.1:5000/ask", {
@@ -74,7 +74,7 @@ const ChatPage = () => {
       console.error("Ошибка при получении ответа от AI:", error);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: "❌ Something went wrong while generating the BPMN diagram. Please try again.", sender: "assistant" },
+        { text: "❌ Something went wrong when creating the BPMN chart. Please try again. Check your internet connection and whether your input relates to the description of the process.", sender: "assistant" },
       ]);
     }
   };

@@ -28,7 +28,7 @@ const ChatPage = () => {
     try {
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: "⏳ Processing your input...", sender: "assistant" },
+        { text: "⏳ Processing of your request. It may take a few minutes...", sender: "assistant" },
       ]);
 
       const response = await axios.post("http://127.0.0.1:5000/describe-bpmn", {

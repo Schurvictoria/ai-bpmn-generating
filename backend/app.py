@@ -87,20 +87,19 @@ def signup():
 
     # Ссылка для подтверждения
     confirm_url = f"http://localhost:3000/confirm/{token}"
-    html = f'<p>Привет! Подтверди свою почту: <a href="{confirm_url}">{confirm_url}</a></p>'
+    html = f'<p>Hello! Please confirm your email: <a href="{confirm_url}">{confirm_url}</a></p>'
 
     # Отправка письма
-    msg = Message("Подтверждение регистрации", recipients=[email], html=html)
+    msg = Message("Registration Confirmation", recipients=[email], html=html)
     mail.send(msg)
 
-    return jsonify({"message": "Письмо с подтверждением отправлено!"}), 200
+    return jsonify({"message": "The confirmation email has been sent!"}), 200
 
     # return jsonify({
     #     "id": new_user.id,
     #     "email": new_user.email
     # })
 
-from flask import redirect
 
 @app.route("/confirm/<token>", methods=["GET"])
 def confirm_email(token):
@@ -115,12 +114,11 @@ def confirm_email(token):
         return jsonify({"message": "fail"}), 400
 
     if user.is_confirmed:
-        return jsonify({"message": "Почта уже подтверждена"}), 200
+        return jsonify({"message": "The email has already been confirmed"}), 200
 
     user.is_confirmed = 1
     db.session.commit()
-    return jsonify({"message": "Email подтверждён!"}), 200
-
+    return jsonify({"message": "Email confirmed!"}), 200
 
 
 @app.route("/resend-email", methods=["POST"])
@@ -131,13 +129,12 @@ def resend_email():
     user = User.query.filter_by(email=email).first()
 
     if not user:
-        return jsonify({"error": "User not found"}), 404
+        return jsonify({"message": "If this email is registered, a confirmation link has been sent."}), 200
 
     if user.is_confirmed:
-        return jsonify({"message": "Email already confirmed"}), 400
+        return jsonify({"message": "Email is already confirmed."}), 200
 
     token = serializer.dumps(email, salt="email-confirm")
-
     confirm_url = f"http://localhost:3000/confirm-email?token={token}&email={email}"
 
     msg = Message(
@@ -151,6 +148,7 @@ def resend_email():
         return jsonify({"message": "Confirmation email resent"}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to send email: {str(e)}"}), 500
+
 
 @app.route("/login", methods=["POST"])
 def login_user():

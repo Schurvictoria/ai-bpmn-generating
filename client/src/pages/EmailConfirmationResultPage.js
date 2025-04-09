@@ -17,18 +17,16 @@ export default function EmailConfirmationResultPage() {
                     }
                 });
 
-                let data = {};
-                try {
-                    data = await res.json();
-                } catch (e) {
-                    setStatus("fail");
-                    return;
-                }
+                const data = await res.json();
 
-                if (res.ok && data.message === "Email подтверждён!") {
-                    setStatus("success");
-                } else if (res.ok && data.message === "Почта уже подтверждена") {
-                    setStatus("already");
+                if (res.ok) {
+                    if (data.message === "Email confirmed!") {
+                        setStatus("success");
+                    } else if (data.message === "The email has already been confirmed") {
+                        setStatus("already");
+                    } else {
+                        setStatus("fail");
+                    }
                 } else {
                     setStatus("fail");
                 }
@@ -47,25 +45,29 @@ export default function EmailConfirmationResultPage() {
     const renderMessage = () => {
         switch (status) {
             case "loading":
-                return "Ожидаем информацию...";
+                return "Waiting for confirmation...";
             case "success":
-                return "Email успешно подтверждён!";
+                return "Your email has been successfully confirmed!";
             case "already":
-                return "Email подтверждён.";
+                return "Email was already confirmed.";
             case "fail":
-                return "Ошибка подтверждения. Ссылка недействительна или устарела.";
+                return "Confirmation failed. The link is invalid or expired.";
             default:
-                return "Что-то пошло не так.";
+                return "Something went wrong.";
         }
     };
 
     return (
         <div className="confirmation-page">
-        <div className="confirmation-container"></div>
-        <div style={{ padding: "2rem", textAlign: "center" }}>
-        <h2 className="confirmation-title">{renderMessage()}</h2>
-            {status !== "loading" && <p className="confirmation-text">Сейчас вы будете перенаправлены на страницу входа...</p>}
-        </div>
+            <div className="confirmation-container"></div>
+            <div style={{ padding: "2rem", textAlign: "center" }}>
+                <h2 className="confirmation-title">{renderMessage()}</h2>
+                {status !== "loading" && (
+                    <p className="confirmation-text">
+                        You will be redirected to the login page shortly...
+                    </p>
+                )}
+            </div>
         </div>
     );
 }

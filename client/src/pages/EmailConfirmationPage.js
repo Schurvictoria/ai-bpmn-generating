@@ -23,10 +23,10 @@ export default function EmailConfirmationPage() {
             const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.error || "Ошибка, попробуйте снова");
+                throw new Error(data.error || "Error, please try again");
             }
 
-            alert("Письмо отправлено");
+            alert("The email has already been sent");
             setResendSuccess(true);
         } catch (err) {
             setError(err.message);
@@ -38,11 +38,11 @@ export default function EmailConfirmationPage() {
             <div className="confirmation-container">
                 <h2 className="confirmation-title">Email confirmation</h2>
                 <p className="confirmation-text">
-                    Ссылка для подтверждения была отправлена на Вашу почту. Перейдите по ней, чтобы завершить регистрацию.
+                The confirmation link has been sent to your email. Click on it to complete the registration.
                 </p>
                 {/* <strong>{useremail}</strong> */}
                 <button className="resend-button" onClick={handleResend}>
-                    Переотправить письмо
+                Resend email
                 </button>
                 {error && <p className="error-text">{error}</p>}
             </div>
