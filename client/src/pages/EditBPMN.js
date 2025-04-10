@@ -1,122 +1,157 @@
-import React, { useState } from "react";
-import axios from "axios";
-import Header from 'modules/Header';
-import BpmnViewer from "processing/BPMNProcessing";
+import React, { useState, useEffect, useRef } from "react";
+import { ReactComponent as PlaneIcon } from "styles/Icons/Union.svg";
 import { motion } from "framer-motion";
+import axios from "axios";
+import 'styles/ChatStyles.css'
+import BpmnViewer from "processing/BPMNProcessing";
+import Header from 'modules/Header'
 
-const EditPage = () => {
-  const [input, setInput] = useState("");
-  const [editedXml, setEditedXml] = useState("");
-  const [fileUrl, setFileUrl] = useState(null);
+const ChatPage = () => {
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [input, setInput] = useState("");
+  const [bpmnFileUrl, setBpmnFileUrl] = useState(null);
+  const [aiMessage, setAiMessage] = useState(null);
+  const [initialMessagesAdded, setInitialMessagesAdded] = useState(false);
+  const messagesEndRef = useRef(null);
 
-  const handleTextSubmit = async () => {
-    if (!input.trim()) return;
+  useEffect(() => {
+    if (!initialMessagesAdded) {
+      setMessages([
+        { text: "👋 Hello! I'm Flowify AI, your assistant for visualizing and improving business processes.", sender: "assistant" },
+        { text: "✨ Just tell me, what to you want to edit in your process and I will do it!", sender: "assistant" },
+      ]);
+      setInitialMessagesAdded(true);
+    }
+  }, [initialMessagesAdded]);
 
-    setLoading(true);
-    setMessages([...messages, { sender: "user", text: input }]);
-
-    try {
-      const res = await axios.post("http://127.0.0.1:5000/edit-bpmn", {
-        query: input
-      });
-
-      const xml = res.data.edited_bpmn;
-      setEditedXml(xml);
-      setMessages((prev) => [...prev, { sender: "assistant", text: "✅ Here's your optimized process!" }]);
-
-      const blob = new Blob([xml], { type: "application/xml" });
-      setFileUrl(URL.createObjectURL(blob));
-    } catch (e) {
-      console.error("Error editing BPMN:", e);
-      setMessages((prev) => [...prev, { sender: "assistant", text: "❌ Failed to edit BPMN." }]);
-    } finally {
-      setLoading(false);
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  const handleFileUpload = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    setLoading(true);
-    setMessages((prev) => [...prev, { sender: "assistant", text: "📤 Uploading and improving BPMN..." }]);
-
-    const formData = new FormData();
-    formData.append("bpmn_file", file);
-
+  const fetchAIResponse = async (userInput) => {
     try {
-      const res = await axios.post("http://127.0.0.1:5000/edit-bpmn", formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: "⏳ Processing of your request. It may take a few minutes...", sender: "assistant" },
+      ]);
+
+      const response = await axios.post("http://127.0.0.1:5000/ask", {
+        query: userInput,
       });
 
-      const xml = res.data.edited_bpmn;
-      setEditedXml(xml);
-      const blob = new Blob([xml], { type: "application/xml" });
-      setFileUrl(URL.createObjectURL(blob));
+      const aiMessage = response.data.response.trim();
+      setAiMessage(aiMessage);
 
-      setMessages((prev) => [...prev, { sender: "assistant", text: "✅ BPMN improved successfully!" }]);
-    } catch (e) {
-      setMessages((prev) => [...prev, { sender: "assistant", text: "❌ Error while improving BPMN." }]);
-    } finally {
-      setLoading(false);
+      const bpmnXmlString = aiMessage;
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: "🔧 Generating BPMN diagram...", sender: "assistant" },
+      ]);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: "📦 Preparing file for download...", sender: "assistant" },
+      ]);
+
+      const blob = new Blob([bpmnXmlString], { type: 'application/xml' });
+      const fileUrl = URL.createObjectURL(blob);
+      setBpmnFileUrl(fileUrl);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "",
+          sender: "assistant",
+          isBpmn: true,
+        },
+      ]);
+    } catch (error) {
+      console.error("Ошибка при получении ответа от AI:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          text: "❌ Something went wrong when creating the BPMN chart. Please try again. Check your internet connection and whether your input relates to the description of the process.",
+          sender: "assistant"
+        },
+      ]);
     }
   };
+
+  const handleSend = async () => {
+    if (input.trim() !== "") {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: input, sender: "user" },
+      ]);
+      setInput("");
+      await fetchAIResponse(input);
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   return (
     <>
-    <Header />
-    <motion.div className="chat-page" initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 50 }} transition={{ duration: 0.5 }}>
-      
-
-      <div className="chat-window">
-        <div className="chat-messages">
-          {messages.map((msg, idx) => (
-            <div key={idx} className={`chat-message ${msg.sender}`}>
-              {msg.text}
-            </div>
-          ))}
-        </div>
-
-        <div className="upload-section">
-          <button onClick={() => document.getElementById("file-upload").click()}>
-            📁 Upload BPMN File
-          </button>
-          <input
-            id="file-upload"
-            type="file"
-            accept=".bpmn,.xml"
-            style={{ display: "none" }}
-            onChange={handleFileUpload}
-          />
-        </div>
-
-        <div className="chat-input">
-          <input
-            type="text"
-            placeholder="Describe your process..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            disabled={loading}
-          />
-          <button onClick={handleTextSubmit} disabled={!input || loading}>
-            🚀
-          </button>
-        </div>
-
-        {editedXml && (
-          <div className="bpmn-view">
-            <BpmnViewer xml={editedXml} />
-            {fileUrl && (
-              <a href={fileUrl} download="edited_diagram.bpmn">📥 Download Edited BPMN</a>
-            )}
-          </div>
-        )}
+      <div>
+        <Header />
       </div>
-    </motion.div>
+
+      <motion.div
+        className="chat-page"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 50 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="chat-window">
+          <div className="chat-messages">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`chat-message ${message.sender === "assistant" ? "assistant" : "user"}`}
+              >
+                {message.text}
+                {message.isBpmn && aiMessage && (
+                  <div>
+                    <BpmnViewer xml={aiMessage} />
+                    {bpmnFileUrl && (
+                      <a href={bpmnFileUrl} download="diagram.bpmn">
+                        Download BPMN File
+                      </a>
+                    )}
+                  </div>
+                )}
+              </div>
+            ))}
+            <div ref={messagesEndRef} />
+          </div>
+
+          <div className="chat-input">
+            <input
+              type="text"
+              placeholder="Enter your request..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && input.trim() !== "") {
+                  handleSend();
+                }
+              }}
+              disabled={messages.length === 0}
+            />
+            <button onClick={handleSend} disabled={input.trim() === ""}>
+              <PlaneIcon width="24" height="24" />
+            </button>
+          </div>
+        </div>
+      </motion.div>
     </>
   );
 };
 
-export default EditPage;
+export default ChatPage;

@@ -35,6 +35,10 @@ const Dashboard = () => {
       navigate("/chat");
   };
 
+  const handleEditClick = () => {
+    navigate("/edit-bpmn");
+};
+
   const handleBPMNtoTextClick = () => {
     navigate("/describe-bpmn");
 };
@@ -64,7 +68,7 @@ const Dashboard = () => {
             <div className="container">
                 <div className="process-card"><button onClick={handleCardClick}><h3>📊 New process</h3><p>Generate your new process easily!</p></button></div>
                 <div className="process-card"><button onClick={handleBPMNtoTextClick}><h3>📝 BPMN to text</h3><p>Convert your bpmn file into text!</p></button></div>
-                <div className="process-card"><button onClick={handleCardClick}><h3>✏️ Edit process</h3><p>Edit your process</p></button></div>
+                <div className="process-card"><button onClick={handleEditClick}><h3>✏️ Edit process</h3><p>Edit your process</p></button></div>
             </div>
 
             {/* Чат — всегда отображается, но заблокирован по умолчанию */}

@@ -1,9 +1,9 @@
-FROM python:3.13.10-slim
+FROM python:3.10-slim
 
-COPY requirements.txt requirements.txt 
-RUN pip install -r requirements.txt 
+RUN pip install openai flask
 
+COPY . /app
 
-COPY . .
+WORKDIR /app
 
-CMD ["python", "main.py"]
+CMD ["python", "app.py"]
