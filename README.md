@@ -7,10 +7,6 @@ Backend — Flask (Python), Frontend — React (JavaScript).
 
 ## 📸 Скриншоты
 
-![Главная страница](![telegram-cloud-photo-size-2-5458675748865963075-y](https://github.com/user-attachments/assets/9c97ff93-7d60-4b51-b0c9-1e721249d762)
-)
-![Генерация диаграммы](![telegram-cloud-photo-size-2-5458675748865963082-w](https://github.com/user-attachments/assets/cb3eb4cf-d24f-4814-a363-69b21515d36e)
-)
 
 > 📁 Скриншоты хранятся в папке `screenshots/`. Добавь свои скриншоты!
 
