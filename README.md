@@ -17,7 +17,7 @@ Backend — Flask (Python), Frontend — React (JavaScript).
 ### 📦 Клонируй репозиторий
 
 ```bash
-git clone https://github.com/your-username/bpmn-diagram-generator.git
+git clone git@github.com:Schurvictoria/ai-bpmn-generating.git
 cd bpmn-diagram-generator
 ```
 
